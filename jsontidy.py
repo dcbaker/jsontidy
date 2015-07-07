@@ -24,18 +24,17 @@ def _parser():
     # The use of type, default, and nargs allows the stdin/stdout to work,
     # since one would either provide a file or stdin/out data
 
-    # FIXME: This will not allow stdin/file to be used. Is there an elegent way
-    # to solve that?
+    # By making output a switched optional argument we can us either a file or
+    # stdin for input, and still use either stdout or a file for output
     parser = argparse.ArgumentParser()
     parser.add_argument('input',
                         type=argparse.FileType('r'),
                         default=sys.stdin,
                         nargs='?',
                         help='JSON data to pretty. Default: stdin')
-    parser.add_argument('output',
+    parser.add_argument('-o', '--output',
                         type=argparse.FileType('w'),
                         default=sys.stdout,
-                        nargs='?',
                         help='Location to place the updated data. '
                              'Default: stdout')
     parser.add_argument('-i', '--indent',
