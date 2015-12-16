@@ -54,7 +54,13 @@ def main():
     args = _parser()
 
     # Read in the contents of the old data as json data
-    content = json.load(args.input)
+    # If parsing fails, print a message about the invalid content and exit with
+    # a status of 1
+    try:
+        content = json.load(args.input)
+    except ValueError as e:
+        print(str(e), file=sys.stderr)
+        sys.exit(1)
 
     # If requested save the old file with a .bak extension
     if (args.preserve and

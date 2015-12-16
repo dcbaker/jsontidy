@@ -18,3 +18,5 @@ jsontidy.py myfile.json | <json consuming utility>
 ```
 
 There are additional options available for more advanced uses, see jsontidy.py -h for more information
+
+If the JSON cannot be parsed, the message provided by the parsing library will be printed and the utility will exit with a status of 1.
