@@ -68,7 +68,8 @@ def main():
 
     # If requested save the old file with a .bak extension
     if args.preserve and equal:
-        os.rename(args.input, args.input + '.bak')
+        args.input.close()
+        os.rename(args.input.name, args.input.name + '.bak')
 
     # If the output is stdout
     if args.output is not None:
