@@ -16,7 +16,7 @@ import sys
 try:
     import simplejson as json
 except ImportError:
-    import json
+    import json  # pylint: disable=wrong-import-order
 
 
 def _parser():
