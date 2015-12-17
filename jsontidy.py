@@ -33,8 +33,7 @@ def _parser():
                         nargs='?',
                         help='JSON data to pretty. Default: stdin')
     parser.add_argument('-o', '--output',
-                        type=argparse.FileType('w'),
-                        default=sys.stdout,
+                        default=None,
                         help='Location to place the updated data. '
                              'Default: stdout')
     parser.add_argument('-i', '--indent',
@@ -52,6 +51,11 @@ def _parser():
 def main():
     """Main function."""
     args = _parser()
+    equal = False
+
+    # True if the input and output are the same
+    if args.output is not None:
+        equal = os.path.abspath(args.input.name) == os.path.abspath(args.output)
 
     # Read in the contents of the old data as json data
     # If parsing fails, print a message about the invalid content and exit with
@@ -63,12 +67,15 @@ def main():
         sys.exit(1)
 
     # If requested save the old file with a .bak extension
-    if (args.preserve and
-            os.path.abspath(args.input) == os.path.abspath(args.output)):
+    if args.preserve and equal:
         os.rename(args.input, args.input + '.bak')
 
-    # Finally dump the updated data
-    json.dump(content, args.output, indent=args.indent)
+    # If the output is stdout
+    if args.output is not None:
+        with open(args.output, 'w') as f:
+            json.dump(content, f, indent=args.indent)
+    else:
+        json.dump(content, sys.stdout, indent=args.indent)
 
 
 if __name__ == '__main__':
